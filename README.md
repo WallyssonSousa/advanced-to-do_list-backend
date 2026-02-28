@@ -35,7 +35,40 @@ Criar um backend escalável e bem estruturado para uma plataforma de tarefas que
 
 ## 🛠️ Tecnologias
 
-As tecnologias e ferramentas serão definidas e detalhadas conforme o projeto evoluir.
+🧑‍💻 Node.js, Express.js, TypeScript, Postgres
+
+---
+
+## 📂 Arquitetura
+
+```
+src/
+ ├── domain/                # Núcleo da aplicação (independente de frameworks)
+ │    ├── entities/         # Entidades de negócio (Task, User, List, Tag)
+ │    ├── value_objects/    # Objetos de valor (Email, Priority, Deadline)
+ │    ├── repositories/     # Interfaces de repositórios (contratos)
+ │    └── services/         # Regras de negócio puras (ex.: validações)
+ │
+ ├── application/           # Casos de uso (orquestram regras de negócio)
+ │    ├── use_cases/        # Ex.: CreateTask, ShareList, AddComment
+ │    └── dto/              # Data Transfer Objects (entrada/saída dos casos de uso)
+ │
+ ├── infrastructure/        # Implementações técnicas
+ │    ├── persistence/      # Repositórios concretos (ORM, SQL, NoSQL)
+ │    ├── external/         # Integrações (Google Calendar, Email, Storage)
+ │    └── config/           # Configurações (DB, autenticação, env)
+ │
+ ├── interfaces/            # Adaptadores de entrada/saída
+ │    ├── controllers/      # REST/GraphQL controllers
+ │    ├── routes/           # Definição de endpoints
+ │    └── presenters/       # Transformação de dados para resposta (DTO → JSON)
+ │
+ └── shared/                # Utilitários comuns
+      ├── exceptions/       # Erros customizados
+      ├── utils/            # Helpers
+      └── middleware/       # Autenticação, logging, etc.
+
+```
 
 ---
 

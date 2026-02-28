@@ -1,0 +1,43 @@
+{
+  "name": "advanced-to-do_list-backend",
+  "version": "1.0.0",
+  "description": "Backend da **Plataforma de Gestão de Tarefas (To-Do App Avançado)**.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "prepare": "husky install",
+    "commit": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-git"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.3.2",
+    "commitizen": "^4.3.1",
+    "cz-git": "^1.12.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^8.0.1",
+    "pg": "^8.19.0",
+    "reflect-metadata": "^0.2.2",
+    "ts-node-dev": "^2.0.0",
+    "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^7.0.11",
+    "husky": "^9.1.7",
+    "typescript": "^5.9.3"
+  }
+}
