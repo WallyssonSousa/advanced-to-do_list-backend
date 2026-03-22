@@ -4,9 +4,11 @@
   "description": "Backend da **Plataforma de Gestão de Tarefas (To-Do App Avançado)**.",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
     "prepare": "husky install",
     "commit": "cz"
   },
@@ -24,6 +26,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.3.2",
+    "bcrypt": "^6.0.0",
     "commitizen": "^4.3.1",
     "cz-git": "^1.12.0",
     "dotenv": "^17.3.1",
@@ -31,13 +34,21 @@
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.1",
     "pg": "^8.19.0",
+    "pino": "^10.3.1",
     "reflect-metadata": "^0.2.2",
     "ts-node-dev": "^2.0.0",
-    "typeorm": "^0.3.28"
+    "tsconfig-paths": "^4.2.0",
+    "typeorm": "^0.3.28",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/nodemailer": "^7.0.11",
+    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/parser": "^8.57.0",
+    "eslint": "^10.0.3",
     "husky": "^9.1.7",
+    "pino-pretty": "^13.1.3",
     "typescript": "^5.9.3"
   }
 }
