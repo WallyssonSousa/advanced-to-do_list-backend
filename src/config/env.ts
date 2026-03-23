@@ -12,4 +12,7 @@ export const env = {
     password: process.env.DB_PASSWORD || 'postgres',
     name: process.env.DB_NAME || 'credential_mailer',
   },
+
+  credentialsApiUrl: process.env.CREDENTIALS_API_URL || "",
+  projectId: process.env.PROJECT_ID || ""
 };
