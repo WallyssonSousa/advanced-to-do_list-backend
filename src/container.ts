@@ -11,6 +11,13 @@ import { ChangePasswordService } from "./application/use-cases/ChangePasswordSer
 import { AuthenticateUserController } from "./infrastructure/http/controllers/AuthenticateUserController";
 import { AuthenticateUserService } from "./application/use-cases/AuthenticateUserService";
 import { JwtTokenAdapter } from "./infrastructure/adapter/JwtTokenAdapter";
+import { TypeOrmTeamRepository } from "./infrastructure/persistence/typeorm/repositories/TypeOrmTeamRepository";
+import { TeamEntity } from "./infrastructure/persistence/typeorm/entities/TeamEntity";
+import { UserTeamEntity } from "./infrastructure/persistence/typeorm/entities/UserTeamEntity";
+import { CreateTeamService } from "./application/use-cases/CreaeteTeamService";
+import { CreateTeamController } from "./infrastructure/http/controllers/CreateTeamController";
+import { GetUserTeamsService } from "./application/use-cases/GetUserTeamsService";
+import { GetUserTeamsController } from "./infrastructure/http/controllers/GetUserTeamsController";
 
 export async function buildCreateUserController() {
 
@@ -48,4 +55,26 @@ export async function buildChangePasswordController() {
   const service = new ChangePasswordService(repo);
 
   return new ChangePasswordController(service);
+}
+
+export async function buildCreateTeamController() {
+  const teamRepository = new TypeOrmTeamRepository(
+    AppDataSource.getRepository(TeamEntity),
+    AppDataSource.getRepository(UserTeamEntity)
+  );
+
+  const service = new CreateTeamService(teamRepository);
+
+  return new CreateTeamController(service);
+}
+
+export async function buildGetUserTeamsController() {
+  const teamsRepository = new TypeOrmTeamRepository(
+    AppDataSource.getRepository(TeamEntity),
+    AppDataSource.getRepository(UserTeamEntity)
+  );
+
+  const service = new GetUserTeamsService(teamsRepository);
+
+  return new GetUserTeamsController(service);
 }
