@@ -13,7 +13,7 @@ export class GetUserTeamsService implements GetUserTeamsUseCase{
     async execute(input: GetUserTeamsInput): Promise<GetUserTeamsOutput[]> {
         const teams = await this.teamRepository.findTeamsByUser(
             input.userUUID,
-            input.onlyResponsibile
+            input.onlyResponsible
         );
 
         return teams.map(team => ({

@@ -10,11 +10,11 @@ export class GetUserTeamsController {
     async handle(req: AuthRequest, res: Response): Promise<Response> {
         const userUUID = req.user!.uuid;
 
-        const onlyResponsibile = req.query.onlyResponsible === "true";
+        const onlyResponsible = req.query.onlyResponsible === "true";
 
         const result = await this.useCase.execute({
             userUUID,
-            onlyResponsibile
+            onlyResponsible
         });
 
         return res.json(result);

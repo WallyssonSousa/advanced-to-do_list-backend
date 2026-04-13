@@ -1,6 +1,6 @@
 export interface GetUserTeamsInput {
     userUUID: string;
-    onlyResponsibile: boolean;
+    onlyResponsible: boolean;
 }
 
 export interface GetUserTeamsOutput {

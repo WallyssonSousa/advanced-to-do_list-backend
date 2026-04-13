@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { buildChangePasswordController, buildCreateTeamController, buildCreateUserController, buildGetUserTeamsController, buildLoginController } from "@/container";
+import { buildChangePasswordController, buildCreateTeamController, buildCreateUserController, buildGetUserTeamsController, buildLoginController } from "./../../container";
 import { authMiddleware } from "./middleware/authMiddleware";
 
 export const routes = Router();

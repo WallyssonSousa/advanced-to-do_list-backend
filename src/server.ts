@@ -1,8 +1,8 @@
 import 'reflect-metadata'
-import { app } from '@/app'
-import { env } from '@/config/env'
-import { AppDataSource } from '@/infrastructure/persistence/typeorm/data-source'
-import { logger } from '@/config/logger'
+import { app } from './app'
+import { env } from './config/env'
+import { AppDataSource } from './infrastructure/persistence/typeorm/data-source'
+import { logger } from './config/logger'
 
 async function bootstrap() {
   await AppDataSource.initialize()

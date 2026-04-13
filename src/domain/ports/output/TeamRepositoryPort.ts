@@ -8,6 +8,6 @@ export interface TeamRepositoryPort{
     ): Promise<void>;
     findTeamsByUser(
         userUUID: string, 
-        onlyResponsavel?: boolean
+        onlyResponsible?: boolean
     ): Promise<Team[]>;
 }

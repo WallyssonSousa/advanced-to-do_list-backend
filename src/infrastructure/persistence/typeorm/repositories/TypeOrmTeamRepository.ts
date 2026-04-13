@@ -15,7 +15,8 @@ export class TypeOrmTeamRepository implements TeamRepositoryPort {
             uuid: team.getUUID(), 
             name: team.getName(),
             description: team.getDescription(),
-            responsavel: team.getResponsavel()
+            responsavel: team.getResponsavel(),
+            createdAt: new Date()
         });
 
         await this.teamRepository.save(entity);
@@ -24,27 +25,27 @@ export class TypeOrmTeamRepository implements TeamRepositoryPort {
     async addUserToTeam(userUUID: string, teamUUID: string): Promise<void> {
         const entity = this.userTeamRepository.create({
             userUUID,
-            teamUUID
+            teamUUID,
+            createdAt: new Date()
         });
 
         await this.userTeamRepository.save(entity);
     }
 
-    async findTeamsByUser(userUUID: string, onlyResponsibile?: boolean): Promise<Team[]> {
+    async findTeamsByUser(userUUID: string, onlyResponsible?: boolean): Promise<Team[]> {
         const query = this.teamRepository.createQueryBuilder("team")
         .innerJoin(
-        UserTeamEntity,
+        "user_teams",
         "ut",
-        "ut.teamUUID = team.uuid"
+        "ut.team_uuid = team.uuid"
         )
-        .where("ut.userUUID = :userUUID", { userUUID });
+        .where("ut.user_uuid = :userUUID", { userUUID });
 
-        if(onlyResponsibile){
+        if (onlyResponsible) {
             query.andWhere("team.responsavel = :userUUID", { userUUID });
         }
 
-        const results = await query.getRawMany();
-        console.log(results);
+        const results = await query.getMany();
 
         return results.map(team => new Team({
             uuid: team.uuid,
