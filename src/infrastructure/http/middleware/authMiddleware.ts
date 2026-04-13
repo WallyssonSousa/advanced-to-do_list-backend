@@ -8,6 +8,12 @@ export interface AuthRequest extends Request {
   };
 }
 
+interface JwtPayload {
+  userId: string;
+  iat?: number;
+  exp?: number;
+}
+
 export function authMiddleware(
   req: AuthRequest,
   res: Response,
@@ -20,10 +26,10 @@ export function authMiddleware(
   }
 
   try {
-    const decoded = jwt.verify(token, env.jwtSecret) as any;
+    const decoded = jwt.verify(token, env.jwtSecret) as JwtPayload;
 
     req.user = {
-      uuid: decoded.uuid
+      uuid: decoded.userId 
     };
 
     next();

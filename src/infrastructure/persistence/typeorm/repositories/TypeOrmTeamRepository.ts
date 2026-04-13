@@ -33,14 +33,15 @@ export class TypeOrmTeamRepository implements TeamRepositoryPort {
     }
 
     async findTeamsByUser(userUUID: string, onlyResponsible?: boolean): Promise<Team[]> {
-        const query = this.teamRepository.createQueryBuilder("team")
-        .innerJoin(
-        "user_teams",
-        "ut",
-        "ut.team_uuid = team.uuid"
-        )
-        .where("ut.user_uuid = :userUUID", { userUUID });
-
+        const query = this.teamRepository
+            .createQueryBuilder("team")
+            .innerJoin(
+                UserTeamEntity,
+                "ut",
+                "ut.teamUUID = team.uuid"
+            )
+            .where("ut.userUUID = :userUUID::uuid", { userUUID });
+    
         if (onlyResponsible) {
             query.andWhere("team.responsavel = :userUUID", { userUUID });
         }

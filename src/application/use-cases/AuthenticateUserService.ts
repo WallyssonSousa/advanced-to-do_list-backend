@@ -37,7 +37,10 @@ export class AuthenticateUserService implements AuthenticateUserUseCase {
     });
 
     return {
-      token
+      token,
+      uuid: user.getUUID(),
+      name: user.getName(),
+      email: user.getEmail()
     };
   }
 }
