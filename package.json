@@ -2,15 +2,21 @@
   "name": "advanced-to-do_list-backend",
   "version": "1.0.0",
   "description": "Backend da **Plataforma de Gestão de Tarefas (To-Do App Avançado)**.",
-  "main": "index.js",
+  "main": "dist/server.js",
+  "_moduleAliases": {
+    "@": "dist"
+  },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node -r module-alias/register dist/server.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "prepare": "husky install",
-    "commit": "cz"
+    "commit": "cz",
+    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/infrastructure/persistence/typeorm/data-source.ts",
+    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/infrastructure/persistence/typeorm/data-source.ts",
+    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate ./src/infrastructure/persistence/typeorm/migrations -d ./src/infrastructure/persistence/typeorm/data-source.ts"
   },
   "config": {
     "commitizen": {
@@ -34,6 +40,7 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "module-alias": "^2.3.4",
     "nodemailer": "^8.0.1",
     "pg": "^8.19.0",
     "pino": "^10.3.1",
