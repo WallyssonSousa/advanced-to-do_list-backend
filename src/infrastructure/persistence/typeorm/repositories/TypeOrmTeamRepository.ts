@@ -40,7 +40,7 @@ export class TypeOrmTeamRepository implements TeamRepositoryPort {
                 "ut",
                 "ut.teamUUID = team.uuid"
             )
-            .where("ut.userUUID = :userUUID::uuid", { userUUID });
+            .where("ut.userUUID = :userUUID", { userUUID });
     
         if (onlyResponsible) {
             query.andWhere("team.responsavel = :userUUID", { userUUID });
