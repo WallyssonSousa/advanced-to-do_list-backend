@@ -55,4 +55,71 @@ export class TypeOrmTeamRepository implements TeamRepositoryPort {
             responsavel: team.responsavel
         }));
     }
+
+    async findByUUID(teamUUID: string): Promise<Team | null> {
+        const team = await this.teamRepository.findOne({
+            where: {
+                uuid: teamUUID
+            }
+        })
+
+        if(!team) return null;
+
+        return new Team({
+            uuid: team.uuid,
+            name: team.name,
+            description: team.description || "",
+            responsavel: team.responsavel
+        })
+    }
+
+    async findUsersByTeam(teamUUID: string): Promise<string[]> {
+        const users = await this.userTeamRepository.find({
+            where: {
+                teamUUID
+            }
+        });
+
+        return users.map(user => user.userUUID);
+    }
+
+    async isUserInTeam(userUUID: string, teamUUID: string): Promise<boolean> {
+        const exists = await this.userTeamRepository.findOne({
+            where: {
+                userUUID,
+                teamUUID
+            }
+        });
+
+        return !!exists;
+    }
+
+    async update(team: Team): Promise<void> {
+        await this.teamRepository.update(
+            { uuid: team.getUUID()},
+            {
+                name: team.getName(),
+                description: team.getDescription(),
+            }
+        );
+    }
+
+    async removeUserFromTeam(userUUID: string, teamUUID: string): Promise<void> {
+        await this.userTeamRepository.delete({
+            userUUID,
+            teamUUID
+        });
+    }
+
+    async updateResponsavel(teamUUID: string, newResponsavel: string): Promise<void> {
+        await this.teamRepository.update(
+            {
+                uuid: teamUUID,
+            }, 
+            {
+                responsavel: newResponsavel
+            }
+        )
+    }
+
 }
