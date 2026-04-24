@@ -18,6 +18,12 @@ import { CreateTeamService } from "./application/use-cases/CreaeteTeamService";
 import { CreateTeamController } from "./infrastructure/http/controllers/CreateTeamController";
 import { GetUserTeamsService } from "./application/use-cases/GetUserTeamsService";
 import { GetUserTeamsController } from "./infrastructure/http/controllers/GetUserTeamsController";
+import { UpdateTeamService } from "./application/use-cases/UpdateTeamService";
+import { UpdateTeamController } from "./infrastructure/http/controllers/UpdateTeamController";
+import { GetTeamUsersService } from "./application/use-cases/GetTeamUsersService";
+import { GetTeamUsersController } from "./infrastructure/http/controllers/GetTeamUsersController";
+import { LeaveTeamService } from "./application/use-cases/LeaveTeamService";
+import { LeaveTeamController } from "./infrastructure/http/controllers/LeaveTeamController";
 
 export async function buildCreateUserController() {
 
@@ -77,4 +83,41 @@ export async function buildGetUserTeamsController() {
   const service = new GetUserTeamsService(teamsRepository);
 
   return new GetUserTeamsController(service);
+}
+
+export async function buildUpdateTeamController() {
+  const repo = new TypeOrmTeamRepository(
+    AppDataSource.getRepository(TeamEntity),
+    AppDataSource.getRepository(UserTeamEntity)
+  );
+
+  const service = new UpdateTeamService(repo);
+
+  return new UpdateTeamController(service);
+}
+
+export async function buildGetTeamUsersController() {
+  const teamRepo = new TypeOrmTeamRepository(
+    AppDataSource.getRepository(TeamEntity),
+    AppDataSource.getRepository(UserTeamEntity)
+  );
+
+  const userRepo = new TypeOrmUserRepository(
+    AppDataSource.getRepository(UserEntity)
+  );
+
+  const service = new GetTeamUsersService(teamRepo, userRepo);
+
+  return new GetTeamUsersController(service);
+}
+
+export async function buildLeaveTeamController(){
+  const repo = new TypeOrmTeamRepository(
+    AppDataSource.getRepository(TeamEntity),
+    AppDataSource.getRepository(UserTeamEntity)
+  );
+
+  const service = new LeaveTeamService(repo);
+
+  return new LeaveTeamController(service);
 }

@@ -24,6 +24,21 @@ export class TypeOrmUserRepository implements UserRepositoryPort {
     });
   }
 
+  async findByUUID(uuid: string): Promise<User | null> {
+    const entity = await this.repository.findOne({ where: { uuid } });
+
+    if (!entity) return null;
+
+    return new User({
+      uuid: entity.uuid,
+      name: entity.name,
+      email: entity.email,
+      password: entity.password,
+      isFirstLogin: entity.isFirstLogin,
+      isTempPassword: entity.isTempPassword
+    });
+  }
+
   async save(user: User): Promise<void> {
     const entity = this.repository.create({
       uuid: user.getUUID(),
