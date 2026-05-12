@@ -18,6 +18,8 @@ import { CreateTeamService } from "./application/use-cases/CreaeteTeamService";
 import { CreateTeamController } from "./infrastructure/http/controllers/CreateTeamController";
 import { GetUserTeamsService } from "./application/use-cases/GetUserTeamsService";
 import { GetUserTeamsController } from "./infrastructure/http/controllers/GetUserTeamsController";
+import { GetAllUsersService } from "./application/use-cases/GetAllUsersService";
+import { GetAllUsersController } from "./infrastructure/http/controllers/GetAllUsersController";
 import { UpdateTeamService } from "./application/use-cases/UpdateTeamService";
 import { UpdateTeamController } from "./infrastructure/http/controllers/UpdateTeamController";
 import { GetTeamUsersService } from "./application/use-cases/GetTeamUsersService";
@@ -85,13 +87,27 @@ export async function buildGetUserTeamsController() {
   return new GetUserTeamsController(service);
 }
 
+export async function buildGetAllUsersController() {
+  const userRepository = new TypeOrmUserRepository(
+    AppDataSource.getRepository(UserEntity)
+  );
+
+  const service = new GetAllUsersService(userRepository);
+
+  return new GetAllUsersController(service);
+}
+
 export async function buildUpdateTeamController() {
-  const repo = new TypeOrmTeamRepository(
+  const teamRepo = new TypeOrmTeamRepository(
     AppDataSource.getRepository(TeamEntity),
     AppDataSource.getRepository(UserTeamEntity)
   );
 
-  const service = new UpdateTeamService(repo);
+  const userRepo = new TypeOrmUserRepository(
+    AppDataSource.getRepository(UserEntity)
+  );
+
+  const service = new UpdateTeamService(teamRepo, userRepo);
 
   return new UpdateTeamController(service);
 }

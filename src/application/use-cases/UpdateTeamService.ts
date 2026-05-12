@@ -1,4 +1,5 @@
 import { TeamRepositoryPort } from "@/domain/ports/output/TeamRepositoryPort";
+import { UserRepositoryPort } from "@/domain/ports/output/UserRepositoryPort";
 import { Team } from '../../domain/entities/Team';
 
 interface UpdateTeamInput {
@@ -12,11 +13,12 @@ interface UpdateTeamInput {
 
 export class UpdateTeamService {
     constructor(
-        private readonly repo: TeamRepositoryPort
+        private readonly teamRepo: TeamRepositoryPort,
+        private readonly userRepo: UserRepositoryPort
     ) {}
 
     async execute(input: UpdateTeamInput): Promise<void> {
-        const team = await this.repo.findByUUID(input.teamUUID);
+        const team = await this.teamRepo.findByUUID(input.teamUUID);
 
         if(!team) {
             throw new Error("Team not found")
@@ -33,13 +35,19 @@ export class UpdateTeamService {
             responsavel: team.getResponsavel()
         });
 
-        await this.repo.update(updatedTeam);
+        await this.teamRepo.update(updatedTeam);
 
         if(input.usersToAdd){
-            for(const userId of input.usersToAdd) {
-                const alreadyInTeam = await this.repo.isUserInTeam(userId, input.teamUUID);
+            for(const userEmail of input.usersToAdd) {
+                const user = await this.userRepo.findByEmail(userEmail);
+
+                if(!user) {
+                    throw new Error(`Usuário com email ${userEmail} não encontrado`);
+                }
+
+                const alreadyInTeam = await this.teamRepo.isUserInTeam(user.getUUID(), input.teamUUID);
                 if(!alreadyInTeam){
-                    await this.repo.addUserToTeam(userId, input.teamUUID);
+                    await this.teamRepo.addUserToTeam(user.getUUID(), input.teamUUID);
                 }
             }
         }

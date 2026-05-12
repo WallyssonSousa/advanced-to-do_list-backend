@@ -12,7 +12,6 @@ export class UpdateTeamController {
             const userUUID = req.user!.uuid;
             const teamUUID = req.params.teamUUID as string;
             const { name, description, usersToAdd } = req.body;
-
             await this.service.execute({
                 teamUUID,
                 userUUID,

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { buildChangePasswordController, buildCreateTeamController, buildCreateUserController, buildGetTeamUsersController, buildGetUserTeamsController, buildLeaveTeamController, buildLoginController, buildUpdateTeamController } from "./../../container";
+import { buildChangePasswordController, buildCreateTeamController, buildCreateUserController, buildGetAllUsersController, buildGetTeamUsersController, buildGetUserTeamsController, buildLeaveTeamController, buildLoginController, buildUpdateTeamController } from "./../../container";
 import { authMiddleware } from "./middleware/authMiddleware";
 
 export const routes = Router();
@@ -17,6 +17,11 @@ routes.get('/api/health', (req, res) => {
  */
 routes.post('/api/users', async (req, res) => {
     const controller = await buildCreateUserController();
+    return controller.handle(req, res);
+})
+
+routes.get('/api/users', authMiddleware, async (req, res) => {
+    const controller = await buildGetAllUsersController();
     return controller.handle(req, res);
 })
 
