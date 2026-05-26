@@ -26,6 +26,14 @@ import { GetTeamUsersService } from "./application/use-cases/GetTeamUsersService
 import { GetTeamUsersController } from "./infrastructure/http/controllers/GetTeamUsersController";
 import { LeaveTeamService } from "./application/use-cases/LeaveTeamService";
 import { LeaveTeamController } from "./infrastructure/http/controllers/LeaveTeamController";
+import { TaskEntity } from "./infrastructure/persistence/typeorm/entities/TaskEntity";
+import { TypeOrmTaskRepository } from "./infrastructure/persistence/typeorm/repositories/TypeOrmTaskRepository";
+import { CreateTaskService } from "./application/use-cases/CreateTaskService";
+import { CreateTaskController } from "./infrastructure/http/controllers/CreateTaskController";
+import { GetTeamTasksService } from "./application/use-cases/GetTeamTasksService";
+import { GetTeamTasksController } from "./infrastructure/http/controllers/GetTeamTasksController";
+import { UpdateTaskService } from "./application/use-cases/UpdateTaskService";
+import { UpdateTaskController } from "./infrastructure/http/controllers/UpdateTaskController";
 
 export async function buildCreateUserController() {
 
@@ -136,4 +144,54 @@ export async function buildLeaveTeamController(){
   const service = new LeaveTeamService(repo);
 
   return new LeaveTeamController(service);
+}
+
+export async function buildGetTeamTasksController() {
+  const repo = new TypeOrmTaskRepository(
+    AppDataSource.getRepository(TaskEntity)
+  );
+
+  const service = new GetTeamTasksService(repo);
+
+  return new GetTeamTasksController(service);
+}
+
+export async function buildCreateTaskController() {
+  const repo = new TypeOrmTaskRepository(
+    AppDataSource.getRepository(TaskEntity)
+  );
+
+  const service = new CreateTaskService(repo);
+
+  return new CreateTaskController(service);
+}
+
+export async function buildUpdateTaskController() {
+  const repo = new TypeOrmTaskRepository(
+    AppDataSource.getRepository(TaskEntity)
+  );
+
+  const service = new UpdateTaskService(repo);
+
+  return new UpdateTaskController(service);
+}
+
+export async function buildDeleteTaskController() {
+  const repo = new TypeOrmTaskRepository(
+    AppDataSource.getRepository(TaskEntity)
+  );
+
+  const service = new (await import("./application/use-cases/DeleteTaskService")).DeleteTaskService(repo);
+
+  return new (await import("./infrastructure/http/controllers/DeleteTaskController")).DeleteTaskController(service);
+}
+
+export async function buildReorderTasksController() {
+  const repo = new TypeOrmTaskRepository(
+    AppDataSource.getRepository(TaskEntity)
+  );
+
+  const service = new (await import("./application/use-cases/ReorderTasksService")).ReorderTasksService(repo);
+
+  return new (await import("./infrastructure/http/controllers/ReorderTasksController")).ReorderTasksController(service);
 }

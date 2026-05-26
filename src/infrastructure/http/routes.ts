@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { buildChangePasswordController, buildCreateTeamController, buildCreateUserController, buildGetAllUsersController, buildGetTeamUsersController, buildGetUserTeamsController, buildLeaveTeamController, buildLoginController, buildUpdateTeamController } from "./../../container";
+import { buildChangePasswordController, buildCreateTeamController, buildCreateUserController, buildGetAllUsersController, buildGetTeamUsersController, buildGetUserTeamsController, buildLeaveTeamController, buildLoginController, buildUpdateTeamController, buildGetTeamTasksController, buildCreateTaskController, buildUpdateTaskController, buildDeleteTaskController, buildReorderTasksController } from "./../../container";
 import { authMiddleware } from "./middleware/authMiddleware";
 
 export const routes = Router();
@@ -118,3 +118,29 @@ routes.post("/api/teams/:teamUUID/leave", authMiddleware, async(req, res) => {
   const controller = await buildLeaveTeamController();
   return controller.handle(req, res);
 })
+
+// Tasks
+routes.get('/api/teams/:teamUUID/tasks', authMiddleware, async (req, res) => {
+  const controller = await buildGetTeamTasksController();
+  return controller.handle(req, res);
+});
+
+routes.post('/api/teams/:teamUUID/tasks', authMiddleware, async (req, res) => {
+  const controller = await buildCreateTaskController();
+  return controller.handle(req, res);
+});
+
+routes.put('/api/tasks/:uuid', authMiddleware, async (req, res) => {
+  const controller = await buildUpdateTaskController();
+  return controller.handle(req, res);
+});
+
+routes.delete('/api/tasks/:uuid', authMiddleware, async (req, res) => {
+  const controller = await buildDeleteTaskController();
+  return controller.handle(req, res);
+});
+
+routes.put('/api/teams/:teamUUID/tasks/reorder', authMiddleware, async (req, res) => {
+  const controller = await buildReorderTasksController();
+  return controller.handle(req, res);
+});

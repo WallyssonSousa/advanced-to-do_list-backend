@@ -1,0 +1,103 @@
+{
+  "info": {
+    "name": "Tasks API - Team Board",
+    "_postman_id": "tasks-api-team-board",
+    "description": "Coleção para testar endpoints de tasks (listar, criar, atualizar).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List Team Tasks",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/teams/{{teamUUID}}/tasks",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","teams","{{teamUUID}}","tasks"]
+        }
+      }
+    },
+    {
+      "name": "Create Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Nova tarefa Postman\",\n  \"description\": \"Teste via Postman\",\n  \"tag\": \"Backend\",\n  \"priority\": \"medium\",\n  \"assigneeUUID\": null,\n  \"position\": 0\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/teams/{{teamUUID}}/tasks",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","teams","{{teamUUID}}","tasks"]
+        }
+      }
+    },
+    {
+      "name": "Update Task",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"done\",\n  \"assigneeUUID\": \"{{assigneeUUID}}\",\n  \"position\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/{{taskUUID}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","tasks","{{taskUUID}}"]
+        }
+      }
+    },
+    {
+      "name": "Delete Task",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/{{taskUUID}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","tasks","{{taskUUID}}"]
+        }
+      }
+    },
+    {
+      "name": "Reorder Tasks",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\"uuid\":\"{{task1}}\",\"status\":\"inprogress\",\"position\":0},\n  {\"uuid\":\"{{task2}}\",\"status\":\"todo\",\"position\":1}\n]"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/teams/{{teamUUID}}/tasks/reorder",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","teams","{{teamUUID}}","tasks","reorder"]
+        }
+      }
+    }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" },
+    { "key": "teamUUID", "value": "" },
+    { "key": "taskUUID", "value": "" },
+    { "key": "assigneeUUID", "value": "" }
+  ]
+}
